@@ -1,0 +1,8 @@
+Variable p:ℝ
+Variable x:ℝ
+
+Rule (Polynomial)
+  Premise
+    @isPolynomial(p, x)
+  Conclusion
+    p is a 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x
