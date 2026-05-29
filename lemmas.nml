@@ -1,0 +1,10 @@
+Variable p:ℝ
+Variable x:ℝ
+
+Lemma
+  Suppose
+    p = x^2 + 1
+  Then
+    p is a 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x
+  Proof
+    p is a 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x by Polynomial
