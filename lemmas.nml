@@ -1,10 +1,16 @@
-Variable p:ℝ
 Variable x:ℝ
 
 Lemma
-  Suppose
-    p = x^2 + 1
-  Then
-    p is a 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x
+  12 is an 𝘪𝘯𝘵𝘦𝘨𝘦𝘳 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x
   Proof
-    p is a 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x by Polynomial
+    12 is an 𝘪𝘯𝘵𝘦𝘨𝘦𝘳 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x by IntegerPolynomial
+
+Lemma
+  x is an 𝘪𝘯𝘵𝘦𝘨𝘦𝘳 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x
+  Proof
+    x is an 𝘪𝘯𝘵𝘦𝘨𝘦𝘳 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x by IntegerPolynomial
+###
+Lemma
+  x^2 + 1 is an 𝘪𝘯𝘵𝘦𝘨𝘦𝘳 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x
+  Proof
+    x^2 + 1 is an 𝘪𝘯𝘵𝘦𝘨𝘦𝘳 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x by IntegerPolynomial
