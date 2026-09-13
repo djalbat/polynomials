@@ -1,4 +1,4 @@
-Variable x:ℝ
+Variable x:ℝ provisionally
 
 Lemma
   12 is an 𝘪𝘯𝘵𝘦𝘨𝘦𝘳 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x
@@ -9,8 +9,23 @@ Lemma
   x is an 𝘪𝘯𝘵𝘦𝘨𝘦𝘳 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x
   Proof
     x is an 𝘪𝘯𝘵𝘦𝘨𝘦𝘳 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x by IntegerPolynomial
-###
+
 Lemma
-  x^2 + 1 is an 𝘪𝘯𝘵𝘦𝘨𝘦𝘳 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x
+  2x is an 𝘪𝘯𝘵𝘦𝘨𝘦𝘳 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x
   Proof
-    x^2 + 1 is an 𝘪𝘯𝘵𝘦𝘨𝘦𝘳 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x by IntegerPolynomial
+    2x is an 𝘪𝘯𝘵𝘦𝘨𝘦𝘳 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x by IntegerPolynomial
+
+Lemma
+  x^2 is an 𝘪𝘯𝘵𝘦𝘨𝘦𝘳 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x
+  Proof
+    x^2 is an 𝘪𝘯𝘵𝘦𝘨𝘦𝘳 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x by IntegerPolynomial
+
+Lemma
+  x^2`+`1 is an 𝘪𝘯𝘵𝘦𝘨𝘦𝘳 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x
+  Proof
+    x^2`+`1 is an 𝘪𝘯𝘵𝘦𝘨𝘦𝘳 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x by IntegerPolynomial
+
+Lemma
+  -`3x^2`+`1 is an 𝘪𝘯𝘵𝘦𝘨𝘦𝘳 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x
+  Proof
+    -`3x^2`+`1 is an 𝘪𝘯𝘵𝘦𝘨𝘦𝘳 𝘱𝘰𝘭𝘺𝘯𝘰𝘮𝘪𝘯𝘢𝘭 in x by IntegerPolynomial

@@ -1,136 +1,216 @@
+import isTermInteger, isTermNaturalNumber from "decimal-numbers";
+
 Boolean isTermIntegerPolynomial(Node termNode, Node indeterminateTermNode) {
-  String indeterminateIdentifier = identifierFromTermNode(indeterminateTermNode);
+  Boolean termPositiveIntegerPolynomial = isTermPositiveIntegerPolynomial(termNode, indeterminateTermNode);
+  
+  Boolean termNegativeIntegerPolynomial = isTermNegativeIntegerPolynomial(termNode, indeterminateTermNode);
 
-  Boolean integerPolynomial = 
+  Boolean termIntegerPolynomial = (termPositiveIntegerPolynomial || termNegativeIntegerPolynomial);
 
-    if (indeterminateIdentifier != "") {
-      Boolean integer = isTermInteger(termNode);
-      Boolean compound = isTermCompound(termNode, indeterminateIdentifier);
-      Boolean expoential = isTermExponential(termNode, indeterminateIdentifier);
-      Boolean indeterminate = isTermIndeterminate(termNode, indeterminateIdentifier);
-
-      Boolean integerPolynomial = (integer || compound || expoential || indeterminate);  
-
-      return integerPolynomial;
-    }
-
-    else
-      false
-  ;
-
-  return integerPolynomial;
+  return termIntegerPolynomial;
 }
 
-Boolean isTermIndeterminate(Node termNode, String indeterminateIdentifier) {
-  Boolean indeterminate = 
+Boolean isTermPositiveIntegerPolynomial(Node termNode, Node indeterminateTermNode) {
+  Boolean termIntegerMonomial = isTermIntegerMonomial(termNode, indeterminateTermNode);
+  
+  Boolean termStrictIntegerPolynomial = isTermStrictIntegerPolynomial(termNode, indeterminateTermNode);
 
-    if (termNode != null) {
-      String identifier = identifierFromTermNode(termNode);
+  Boolean termPositiveIntegerPolynomial = (termIntegerMonomial || termStrictIntegerPolynomial);
 
-      Boolean indeterminate = (identifier == indeterminateIdentifier);  
+  return termPositiveIntegerPolynomial;
+}
 
-      return indeterminate;
-    }
-    else
-      false
+Boolean isTermNegativeIntegerPolynomial(Node termNode, Node indeterminateTermNode) {
+  { List<Node> childNodes } = termNode;
 
-  ;
+  Boolean termNegativeIntegerPolynomial = apply(childNodes, [
+    isMinus, 
+    isBacktick, 
+    isArgumentTermPositiveIntegerPolynomial
+  ], indeterminateTermNode);
+
+  return termNegativeIntegerPolynomial;
+}
+
+Boolean isTermStrictIntegerPolynomial(Node termNode, Node indeterminateTermNode) {
+  { List<Node> childNodes } = termNode;
+
+  Boolean termStrictIntegerPolynomial = apply(childNodes, [
+    isArgumentTermIntegerPolynomial, 
+    isBacktick, 
+    isPlusOrMinus, 
+    isBacktick, 
+    isArgumentTermIntegerMonomial
+  ], indeterminateTermNode);
+
+  return termStrictIntegerPolynomial;
+}
+
+Boolean isTermIntegerMonomial(Node termNode, Node indeterminateTermNode) {
+  Boolean termNaturalNumber = isTermNaturalNumber(termNode);
+
+  Boolean termIndeterminate = isTermIndeterminate(termNode, indeterminateTermNode);
+  
+  Boolean termExponential = isTermExponential(termNode, indeterminateTermNode);
+  
+  Boolean termCompound = isTermCompound(termNode, indeterminateTermNode);
+
+  Boolean termIntegerMonomial = (termNaturalNumber || termIndeterminate || termExponential || termCompound);
+
+  return termIntegerMonomial;
+}
+
+Boolean isTermCompound(Node termNode, Node indeterminateTermNode) {
+  { List<Node> childNodes } = termNode;
+
+  Boolean termCompound = apply(childNodes, [
+    isArgumentTermNaturalNumber,
+    isNoWhitespace,
+    isArgumentTermIndeterminateOrExponential
+  ], indeterminateTermNode);
+
+  return termCompound;
+}
+
+Boolean isTermExponential(Node termNode, Node indeterminateTermNode) {
+  { List<Node> childNodes } = termNode;
+
+  Boolean termExponential = apply(childNodes, [
+    isArgumentTermIndeterminate, 
+    isNoWhitespace, 
+    isCaret, 
+    isNoWhitespace, 
+    isArgumentTermNaturalNumber
+  ], indeterminateTermNode);
+
+  return termExponential;
+}
+
+Boolean isTermIndeterminate(Node termNode, Node indeterminateTermNode) {
+  Boolean indeterminate = (termNode == indeterminateTermNode);  
 
   return indeterminate;
 }
 
-Boolean isTermExponential(Node termNode, String indeterminateIdentifier) {
-  { List<Node> childNodes } = termNode;
+Boolean isTermIndeterminateOrExponential(Node termNode, Node indeterminateTermNode) {
+  Boolean termExponential = isTermExponential(termNode, indeterminateTermNode);
 
-  Integer childNodesLength = lengthOf(childNodes);
+  Boolean termIndeterminate = isTermIndeterminate(termNode, indeterminateTermNode);
 
-  Boolean exponential = 
+  Boolean termIndeterminateOrExponential = (termExponential || termIndeterminate);
 
-    if (childNodesLength == 5) {
-      [ , Node centerLeftChildNode, Node centerChildNode, Node centerRightChildNode,  ] = childNodes;
-
-      Boolean centerChildCaret = isCaret(centerChildNode);
-
-      Boolean centerLeftChildNoWhitespace = isNoWhitespace(centerLeftChildNode);
-      Boolean centerRightChildNoWhitespace = isNoWhitespace(centerRightChildNode);
-
-      Boolean exponential = 
-
-        if (centerChildCaret && centerLeftChildNoWhitespace && centerRightChildNoWhitespace) {
-          [ Node leftChildNode, , , , Node rightChildNode ] = childNodes;
-
-          Node leftTermNode = nodeQuery(leftChildNode, "/argument/term!");
-          Node rightTermNode = nodeQuery(rightChildNode, "/argument/term!");
-
-          Boolean leftCompound = isTermCompound(leftTermNode, indeterminateIdentifier);
-
-          Boolean leftIndeterminate = isTermIndeterminate(leftTermNode, indeterminateIdentifier);
-
-          Boolean rightInteger = isTermInteger(rightTermNode);
-
-          Boolean exponential = ((leftCompound || leftIndeterminate) && rightInteger);
-
-          return exponential;
-        }
-        else
-          false
-
-      ;
-
-      return exponential;
-    }
-    else
-      false
-
-  ;
-
-  return exponential;
+  return termIndeterminateOrExponential;
 }
 
-Boolean isTermCompound(Node termNode, String indeterminateIdentifier) {
-  { List<Node> childNodes } = termNode;
+export Boolean isArgumentTermNaturalNumber(Node argumentNode, Node indeterminateTermNode) {
+  Node termNode = nodeQuery(argumentNode, "/argument/term!");
 
-  Integer childNodesLength = lengthOf(childNodes);
+  Boolean argumentTermNaturalNumber = 
 
-  Boolean compound = 
+    if (termNode != null) {
+      Boolean termNaturalNumber = isTermNaturalNumber(termNode);
 
-    if (childNodesLength == 3) {
-      [ , Node centerChildNode, ] = childNodes;
-
-      Boolean centerChildNoWhitespace = isNoWhitespace(centerChildNode);
-
-      Boolean compound = 
-
-        if (centerChildNoWhitespace) {
-          [ Node leftChildNode, , Node rightChildNode ] = childNodes;
-
-          Node leftTermNode = nodeQuery(leftChildNode, "/argument/term!");
-          Node rightTermNode = nodeQuery(rightChildNode, "/argument/term!");
-
-          Boolean rightTermIndeterminate = isTermIndeterminate(rightTermNode, indeterminateIdentifier);
-
-          Boolean leftTermInteger = isTermInteger(leftTermNode);
-
-          Boolean compound = (leftTermInteger && rightTermIndeterminate);
-
-          return compound;
-        }
-        else
-          false
-
-      ;
-
-      return compound;
+      return termNaturalNumber;
     }
+
     else
       false
-
   ;
 
-  return compound;
+  return argumentTermNaturalNumber;
 }
 
-Boolean isCaret(Node node) {
+Boolean isArgumentTermIndeterminate(Node argumentNode, Node indeterminateTermNode) {
+  Node termNode = nodeQuery(argumentNode, "/argument/term!");
+
+  Boolean isArgumentTermIndeterminate = 
+
+    if (termNode != null) {
+      Boolean termIndeterminate = isTermIndeterminate(termNode, indeterminateTermNode);
+
+      return termIndeterminate;
+    }
+
+    else
+      false
+  ;
+
+  return isArgumentTermIndeterminate;
+}
+
+Boolean isArgumentTermIntegerMonomial(Node argumentNode, Node indeterminateTermNode) {
+  Node termNode = nodeQuery(argumentNode, "/argument/term!");
+
+  Boolean argumentTermIntegerMonomial = 
+
+    if (termNode != null) {
+      Boolean termIntegerMonomial = isTermIntegerMonomial(termNode, indeterminateTermNode);
+
+      return termIntegerMonomial;
+    }
+
+    else
+      false
+  ;
+
+  return argumentTermIntegerMonomial;
+}
+
+Boolean isArgumentTermIntegerPolynomial(Node argumentNode, Node indeterminateTermNode) {
+  Node termNode = nodeQuery(argumentNode, "/argument/term!");
+
+  Boolean argumentTermIntegerPolynomial = 
+
+    if (termNode != null) {
+      Boolean termIntegerPolynomial = isTermIntegerPolynomial(termNode, indeterminateTermNode);
+
+      return termIntegerPolynomial;
+    }
+
+    else
+      false
+  ;
+
+  return argumentTermIntegerPolynomial;
+}
+
+Boolean isArgumentTermPositiveIntegerPolynomial(Node argumentNode, Node indeterminateTermNode) {
+  Node termNode = nodeQuery(argumentNode, "/argument/term!");
+
+  Boolean argumentTermIntegerPolynomial = 
+
+    if (termNode != null) {
+      Boolean termPositiveIntegerPolynomial = isTermPositiveIntegerPolynomial(termNode, indeterminateTermNode);
+
+      return termPositiveIntegerPolynomial;
+    }
+
+    else
+      false
+  ;
+
+  return argumentTermIntegerPolynomial;
+}
+
+Boolean isArgumentTermIndeterminateOrExponential(Node argumentNode, Node indeterminateTermNode) {
+  Node termNode = nodeQuery(argumentNode, "/argument/term!");
+
+  Boolean argumentTermIndeterminateOrExponential = 
+
+    if (termNode != null) {
+      Boolean termIndeterminateOrExponential = isTermIndeterminateOrExponential(termNode, indeterminateTermNode);
+
+      return termIndeterminateOrExponential;
+    }
+
+    else
+      false
+  ;
+
+  return argumentTermIndeterminateOrExponential;
+}
+
+Boolean isCaret(Node node, Node indeterminateTermNode) {
   { Boolean terminal } = node;
 
   Boolean caret = 
@@ -152,23 +232,73 @@ Boolean isCaret(Node node) {
   return caret;
 }
 
-Boolean isTermInteger(Node termNode) {
-  Boolean integer = 
+Boolean isMinus(Node node, Node indeterminateTermNode) {
+  { Boolean terminal } = node;
 
-    if (termNode != null) {
-      Boolean integer = tryInteger(termNode);
+  Boolean minus = 
 
-      return integer;
+    if (terminal) {
+      Node terminalNode = node;
+
+      { String content } = terminalNode;
+
+      Boolean minus = (content == "-");
+
+      return minus;
     }
     else
       false
 
-    ;
+  ;
 
-  return integer;
+  return minus;
 }
 
-Boolean isNoWhitespace(Node node) {
+Boolean isBacktick(Node node, Node indeterminateTermNode) {
+  { Boolean terminal } = node;
+
+  Boolean backtick = 
+
+    if (terminal) {
+      Node terminalNode = node;
+
+      { String type } = terminalNode;
+
+      Boolean backtick = (type == "backtick");
+
+      return backtick;
+    }
+    else
+      false
+
+  ;
+
+  return backtick;
+}
+
+Boolean isPlusOrMinus(Node node, Node indeterminateTermNode) {
+  { Boolean terminal } = node;
+
+  Boolean plusOrMinus = 
+
+    if (terminal) {
+      Node terminalNode = node;
+
+      { String content } = terminalNode;
+
+      Boolean plusOrMinus = ((content == "+") || (content == "-"));
+
+      return plusOrMinus;
+    }
+    else
+      false
+
+  ;
+
+  return plusOrMinus;
+}
+
+Boolean isNoWhitespace(Node node, Node indeterminateTermNode) {
   { Boolean terminal } = node;
 
   Boolean noWhitespace = 
@@ -186,22 +316,4 @@ Boolean isNoWhitespace(Node node) {
   ;
 
   return noWhitespace;
-}
-
-String identifierFromTermNode(Node termNode) {
-  Node identifierTerminalNode = nodeQuery(termNode, "/term/variable!/@identifier!");
-
-  String identifier = 
-
-    if (identifierTerminalNode != null) {
-      { String content as identifier } = identifierTerminalNode;
-
-      return identifier;
-    }
-
-    else
-      ""
-  ;
-
-  return identifier;
 }

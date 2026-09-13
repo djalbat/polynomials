@@ -1,5 +1,5 @@
-Variable p:ℝ
-Variable x:ℝ
+Variable p
+Variable x
 
 Rule (IntegerPolynomial)
   Premise

@@ -1,11 +1,8 @@
 {
-  "version": "0.0.1",
+  "version": "0.0.0",
   "repository": "https://github.com/djalbat/polynomials",
   "dependencies": {
-    "numbers": "0.0",
-    "arithmetic": "0.0",
     "decimal-numbers": "0.0",
-    "rational-numbers": "0.0",
     "superscripts-and-subscripts": "0.0"
   }
 }
